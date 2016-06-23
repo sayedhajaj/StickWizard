@@ -4,7 +4,7 @@ function Level1(){
 `WWWWWWWWWWWWWWWWWW
 
 
- WW  P
+ WW  PW
 
       WWWWW
 
