@@ -16,7 +16,21 @@ function Player(position, dimensions){
         animList["fall"] = animList["jump"].getReversedAnimation();
         return animList;
     })();
-    this.currentAnimation = "walk";
+    this.currentAnimation = "idle";
+    this.states.unshift(new PlayerState());
 }
 
 Player.prototype = new Sprite();
+
+Player.prototype.handleKeyInput = function(evt, keyup){
+    if(keyup){
+        if(keystate[right]) this.velocity.a = 5;
+        if(keystate[left]) this.velocity.a = -5;
+    } else {
+        if(keystate[right] || keystate[left]) this.velocity.a = 0;
+    }
+};
+
+Player.prototype.handleMouseDown = function(x, y){
+
+};

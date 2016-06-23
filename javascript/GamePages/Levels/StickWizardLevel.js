@@ -13,7 +13,7 @@ function StickWizardLevel(){
                 if(level[y][x].toUpperCase() === "F")
                     this.walls.push(new Platform(new Vector(x*this.blocksize, y*this.blocksize), new Vector(this.blocksize, this.blocksize)));
                 //if(level[y][x].toUpperCase() === "E")
-                    //this.consumables.push(new (x*this.blocksize, y*this.blocksize, this.blocksize, this.blocksize));
+                    //this.enemies.push(new (x*this.blocksize, y*this.blocksize, this.blocksize, this.blocksize));
                 if(level[y][x].toUpperCase() === "P")
                     this.player = new Player(new Vector(x*this.blocksize, y*this.blocksize), new Vector(this.blocksize, this.blocksize));
 
@@ -62,12 +62,12 @@ StickWizardLevel.prototype.handleKeyInput = function(evt, keyup){
 		if (keystate[f]) {
             requestFullScreen();
 		}
-		if (keystate[82]) {
-
-		}
     }
+    this.player.handleKeyInput(evt, keyup);
 }
 
-StickWizardLevel.prototype.handleMouseDown = function(x, y){};
+StickWizardLevel.prototype.handleMouseDown = function(x, y){
+    this.player.handleMouseDown(x, y);
+};
 StickWizardLevel.prototype.handleTouchDown = function(x, y){StickWizardLevel.prototype.handleMouseDown(x, y);};
 StickWizardLevel.prototype.handleTouchClick = function(x, y){StickWizardLevel.prototype.handleMouseDown(x, y);};
