@@ -35,10 +35,13 @@ StickWizardLevel.prototype.init = function(){
 
 
 StickWizardLevel.prototype.update = function(delta){
-    for (var wall of this.walls) {
-        wall.update();
-    }
     this.player.update(delta);
+    this.player.onGround = false;
+    for (var wall of this.walls) {
+        if(wall.collide(this.player)) wall.handleCollision(this.player);
+        if(wall.onGround(this.player)) wall.putOnGround(this.player);
+    }
+
 };
 
 
@@ -47,8 +50,8 @@ StickWizardLevel.prototype.draw = function(){
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "blue";
     ctx.save();
-    for(var x = 0; x < 640; x++)
-        ctx.fillRect(x, (200)+100*Math.cos(x/20), 5, 10);
+    /*for(var x = 0; x < 640; x++)
+        ctx.fillRect(x, (200)+100*Math.cos(x/20), 5, 10);*/
     for (var wall of this.walls) {
         wall.draw();
     }

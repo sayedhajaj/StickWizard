@@ -1,5 +1,6 @@
 function Player(position, dimensions){
     Sprite.call(this, position, dimensions);
+    this.onGround = false;
     this.animations = (function(){
         var animList = [];
         var animStates = ["idle", "walk", "jump", "fall"];
@@ -17,20 +18,27 @@ function Player(position, dimensions){
         return animList;
     })();
     this.currentAnimation = "idle";
-    this.states.unshift(new PlayerState());
+    this.states.unshift(new IdleState());
+    this.states[0].enter(this);
 }
 
 Player.prototype = new Sprite();
 
 Player.prototype.handleKeyInput = function(evt, keyup){
-    if(keyup){
-        if(keystate[right]) this.velocity.a = 5;
-        if(keystate[left]) this.velocity.a = -5;
-    } else {
-        if(keystate[right] || keystate[left]) this.velocity.a = 0;
+    var newState = this.states[0].handleKeyInput(this, evt, keyup);
+    if(newState) {
+        this.states.unshift(newState);
+        this.states[0].enter(this);
     }
 };
 
 Player.prototype.handleMouseDown = function(x, y){
 
+};
+
+
+Player.prototype.update = function(timePassed, blocks) {
+    if(!this.onGround) this.velocity.b = 5;
+    else this.velocity.b = 0;
+    Sprite.prototype.update.call(this, timePassed);
 };

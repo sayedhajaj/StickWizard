@@ -1,18 +1,18 @@
 function Level1(){
     StickWizardLevel.call(this);
     this.levelString =
-`WWWWWWWWWWWWWWWWWW
+`WWWWWWWWWWWWWWWW
 
 
- WW  PW
-
+ WW   P
+             WW
       WWWWW
 
    WW
 
  WWW
 
-WWWWWWWWWWWWWWWWW`;
+WWWWWWWWWWWWWWWW`;
 };
 
 Level1.prototype = StickWizardLevel.prototype;

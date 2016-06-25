@@ -213,7 +213,7 @@ ImageData.prototype.makeTransparent = function(r, g, b){
     var imageData = this.data;
     for (var i = 0; i < imageData.length; i+= 4) {
         if(imageData[i] === r && imageData[i+1] === g && imageData[i+2] === b){
-            imageData[i+3] = null;
+            imageData[i+3] = 0;
         }
     }
     return this;
@@ -232,4 +232,19 @@ ImageData.prototype.resizeImageData = function(dimensions){
     destCtx.scale(dimensions.a/this.width, dimensions.b/this.height);
     destCtx.drawImage(imageCanvas, 0, 0);
     return destCtx.getImageData(0, 0, dimensions.a, dimensions.b);
-}
+};
+
+ImageData.prototype.flipImageDataHorizontally = function(){
+    var imageCanvas = document.createElement('canvas');
+    imageCanvas.width = this.width;
+    imageCanvas.height = this.height;
+    var imageCtx = imageCanvas.getContext("2d");
+    imageCtx.putImageData(this, 0, 0);
+    var destCanvas = document.createElement('canvas');
+    destCanvas.width = this.width;
+    destCanvas.height = this.height;
+    destCtx = destCanvas.getContext("2d");
+    destCtx.scale(-1, 1);
+    destCtx.drawImage(imageCanvas, -this.width, 0);
+    return destCtx.getImageData(0, 0, this.width, this.height);
+};
