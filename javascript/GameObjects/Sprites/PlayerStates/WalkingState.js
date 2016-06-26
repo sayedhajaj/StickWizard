@@ -6,6 +6,7 @@ function WalkingState(right){
 WalkingState.prototype = new OnGroundState();
 
 WalkingState.prototype.enter = function(player){
+    player.velocity.b = 0;
     if(this.right) player.velocity.a = 5;
     else player.velocity.a = -5;
     player.setAnimation("walk");

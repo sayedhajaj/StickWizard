@@ -10,10 +10,10 @@ Sprite.prototype = new GameObject();
 
 Sprite.prototype.update = function(timePassed){
     GameObject.prototype.update.call(this, timePassed);
-    var newState = this.states[0].update(this);
+    var newState = this.states[0].update(this, timePassed);
     if(newState) {
-        states.unshift(newState);
-        states[0].enter(this);
+        this.states.unshift(newState);
+        this.states[0].enter(this);
     }
     this.animations[this.currentAnimation].update(timePassed);
     if(this.velocity.a<0) this.facingRight = false;
@@ -32,5 +32,9 @@ Sprite.prototype.draw = function(){
     var imageToDraw = this.animations[this.currentAnimation].getImage().resizeImageData(new Vector(
         this.dimensions.a*widthScale, this.dimensions.b*heightScale));
     if(!this.facingRight) imageToDraw = imageToDraw.flipImageDataHorizontally();
-    ctx.putImageData(imageToDraw, this.position.a*widthScale, this.position.b*heightScale);
+    ctx.putImageData(imageToDraw, (camera.position.a+this.position.a)*widthScale, (camera.position.b+this.position.b)*heightScale);
+    /*var tempCanv = document.createElement('canvas');
+    var tempCtx = tempCanv.getContext("2d");
+    tempCtx.putImageData(imageToDraw, 0, 0);
+    ctx.drawImage(tempCanv, this.position.a, this.position.b);*/
 };

@@ -4,6 +4,8 @@ function StickWizardLevel(){
     this.enemies = [];
     this.levelString = ``;
     this.blocksize = 40;
+    this.playerBoundPos = new Vector(170, 140);
+    this.playerBoundSize = new Vector(200, 110);
     this.parseLevel = function(){
         var level = this.levelString.split("\n");
         for(var y = 0; y < level.length; y++){
@@ -29,8 +31,7 @@ StickWizardLevel.prototype.init = function(){
     this.walls = [];
     this.enemies = [];
     this.parseLevel();
-
-
+    camera.position = this.playerBoundPos.SubtractVector(this.player.position);
 };
 
 
@@ -42,6 +43,17 @@ StickWizardLevel.prototype.update = function(delta){
         if(wall.onGround(this.player)) wall.putOnGround(this.player);
     }
 
+    screenPos = this.player.position.AddVector(camera.position);
+
+    if(screenPos.a < this.playerBoundPos.a) camera.velocity.a = Math.abs(this.player.velocity.a);
+    else if(screenPos.a > this.playerBoundPos.a+this.playerBoundSize.a) camera.velocity.a = -Math.abs(this.player.velocity.a);
+    else camera.velocity.a = 0;
+
+    if(screenPos.b<this.playerBoundPos.b) camera.velocity.b = Math.abs(this.player.velocity.b);
+    else if(screenPos.b>=this.playerBoundPos.b+this.playerBoundSize.b) camera.velocity.b = -Math.abs(this.player.velocity.b);
+    else camera.velocity.b = 0;
+    camera.update();
+
 };
 
 
@@ -50,8 +62,8 @@ StickWizardLevel.prototype.draw = function(){
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "blue";
     ctx.save();
-    /*for(var x = 0; x < 640; x++)
-        ctx.fillRect(x, (200)+100*Math.cos(x/20), 5, 10);*/
+    ctx.strokeRect(this.playerBoundPos.a, this.playerBoundPos.b, this.playerBoundSize.a, this.playerBoundSize.b);
+    ctx.translate(camera.position.a, camera.position.b);
     for (var wall of this.walls) {
         wall.draw();
     }

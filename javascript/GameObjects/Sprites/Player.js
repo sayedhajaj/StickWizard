@@ -38,7 +38,7 @@ Player.prototype.handleMouseDown = function(x, y){
 
 
 Player.prototype.update = function(timePassed, blocks) {
-    if(!this.onGround) this.velocity.b = 5;
-    else this.velocity.b = 0;
+    /*if(!this.onGround) this.velocity.b = 5;
+    else this.velocity.b = 0;*/
     Sprite.prototype.update.call(this, timePassed);
 };
