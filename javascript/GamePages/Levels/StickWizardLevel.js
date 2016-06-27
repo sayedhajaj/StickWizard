@@ -39,8 +39,10 @@ StickWizardLevel.prototype.update = function(delta){
     this.player.update(delta);
     this.player.onGround = false;
     for (var wall of this.walls) {
-        if(wall.collide(this.player)) wall.handleCollision(this.player);
-        if(wall.onGround(this.player)) wall.putOnGround(this.player);
+        if(wall.collide(this.player)) {
+            wall.handleCollision(this.player);
+            if(wall.onGround(this.player)) wall.putOnGround(this.player);
+        }
     }
 
     screenPos = this.player.position.AddVector(camera.position);
@@ -82,7 +84,7 @@ StickWizardLevel.prototype.handleKeyInput = function(evt, keyup){
 }
 
 StickWizardLevel.prototype.handleMouseDown = function(x, y){
-    this.player.handleMouseDown(x, y);
+    //this.player.handleMouseDown(x, y);
 };
 StickWizardLevel.prototype.handleTouchDown = function(x, y){StickWizardLevel.prototype.handleMouseDown(x, y);};
 StickWizardLevel.prototype.handleTouchClick = function(x, y){StickWizardLevel.prototype.handleMouseDown(x, y);};

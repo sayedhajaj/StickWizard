@@ -15,7 +15,7 @@ function Block(position, dimensions){
         var bottom = gameObject.position.b+gameObject.dimensions.b;
         var xOverlap = this.getOverlap(gameObject.position.a, this.position.a, gameObject.dimensions.a, this.dimensions.a);
         var yOverlap = this.getOverlap(gameObject.position.b, this.position.b, gameObject.dimensions.b, this.dimensions.b);
-        return (this.collide(gameObject) && xOverlap < yOverlap &&
+        return (xOverlap < yOverlap &&
         (bottom >= this.position.b && bottom <= this.position.b+this.dimensions.b));
     };
 
