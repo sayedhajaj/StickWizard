@@ -4,8 +4,8 @@ function StickWizardLevel(){
     this.enemies = [];
     this.levelString = ``;
     this.blocksize = 40;
-    this.playerBoundPos = new Vector(170, 140);
-    this.playerBoundSize = new Vector(200, 110);
+    this.playerBoundPos = new Vector(220, 140);
+    this.playerBoundSize = new Vector(120, 110);
     this.parseLevel = function(){
         var level = this.levelString.split("\n");
         for(var y = 0; y < level.length; y++){
@@ -60,9 +60,9 @@ StickWizardLevel.prototype.update = function(delta){
 StickWizardLevel.prototype.draw = function(){
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "blue";
+    ctx.fillStyle = ctx.strokeStyle = "blue";
     ctx.save();
-    ctx.strokeRect(this.playerBoundPos.a, this.playerBoundPos.b, this.playerBoundSize.a, this.playerBoundSize.b);
+    //ctx.strokeRect(this.playerBoundPos.a, this.playerBoundPos.b, this.playerBoundSize.a, this.playerBoundSize.b);
     ctx.translate(camera.position.a, camera.position.b);
     for (var wall of this.walls) {
         wall.draw();
