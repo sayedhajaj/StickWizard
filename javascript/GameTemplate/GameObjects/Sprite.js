@@ -28,13 +28,10 @@ Sprite.prototype.setAnimation = function(animation){
 };
 
 Sprite.prototype.draw = function(){
-    ctx.scale(-1, 1);
-    var imageToDraw = this.animations[this.currentAnimation].getImage().resizeImageData(new Vector(
-        this.dimensions.a*widthScale, this.dimensions.b*heightScale));
-    if(!this.facingRight) imageToDraw = imageToDraw.flipImageDataHorizontally();
-    ctx.putImageData(imageToDraw, (camera.position.a+this.position.a)*widthScale, (camera.position.b+this.position.b)*heightScale);
-    /*var tempCanv = document.createElement('canvas');
+    var tempCanv = document.createElement('canvas');
     var tempCtx = tempCanv.getContext("2d");
+    var imageToDraw = this.animations[this.currentAnimation].getImage();
+    if(!this.facingRight) imageToDraw = imageToDraw.flipImageDataHorizontally();
     tempCtx.putImageData(imageToDraw, 0, 0);
-    ctx.drawImage(tempCanv, this.position.a, this.position.b);*/
+    ctx.drawImage(tempCanv, this.position.a, this.position.b);
 };
