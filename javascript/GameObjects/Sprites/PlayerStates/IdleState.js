@@ -9,9 +9,9 @@ IdleState.prototype.enter = function(player){
     player.setAnimation("idle");
 };
 
-IdleState.prototype.handleKeyInput = function(player, evt, keyup){
+IdleState.prototype.handleKeyInput = function(player, keyup){
     if(keyup){
         if(keystate[right] || keystate[left]) return new WalkingState(keystate[right]);
     }
-    return OnGroundState.prototype.handleKeyInput(player, evt, keyup);
+    return OnGroundState.prototype.handleKeyInput(player, keyup);
 };

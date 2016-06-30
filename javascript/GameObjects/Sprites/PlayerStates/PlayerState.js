@@ -11,7 +11,7 @@ PlayerState.prototype.update = function(player){
     if(player.velocity.Length()!=0 && player.velocity.b==0) player.setAnimation("walk");*/
 }
 
-PlayerState.prototype.handleKeyInput = function(player, evt, keyup){
+PlayerState.prototype.handleKeyInput = function(player, keyup){
     if(keyup){
         if(keystate[right]) player.velocity.a = 5;
         if(keystate[left]) player.velocity.a = -5;

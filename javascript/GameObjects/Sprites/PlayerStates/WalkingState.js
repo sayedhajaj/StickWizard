@@ -12,11 +12,11 @@ WalkingState.prototype.enter = function(player){
     player.setAnimation("walk");
 };
 
-WalkingState.prototype.handleKeyInput = function(player, evt, keyup){
+WalkingState.prototype.handleKeyInput = function(player, keyup){
     if(keyup){
 
     } else {
         if(keystate[right] || keystate[left]) return new IdleState();
     }
-    return OnGroundState.prototype.handleKeyInput(player, evt, keyup);
+    return OnGroundState.prototype.handleKeyInput(player, keyup);
 };
