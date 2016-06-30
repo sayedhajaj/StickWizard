@@ -74,13 +74,13 @@ StickWizardLevel.prototype.draw = function(){
 };
 
 
-StickWizardLevel.prototype.handleKeyInput = function(evt, keyup){
+StickWizardLevel.prototype.handleKeyInput = function(keyup){
 	if(keyup){
 		if (keystate[f]) {
             requestFullScreen();
 		}
     }
-    this.player.handleKeyInput(evt, keyup);
+    this.player.handleKeyInput(keyup);
 }
 
 StickWizardLevel.prototype.handleMouseDown = function(x, y){
@@ -88,3 +88,15 @@ StickWizardLevel.prototype.handleMouseDown = function(x, y){
 };
 StickWizardLevel.prototype.handleTouchDown = function(x, y){StickWizardLevel.prototype.handleMouseDown(x, y);};
 StickWizardLevel.prototype.handleTouchClick = function(x, y){StickWizardLevel.prototype.handleMouseDown(x, y);};
+
+StickWizardLevel.prototype.handleDeviceMotion = function(x, y, z, ralpha, rbeta, rgamma, interval){
+    if(x<-5) keystate[right] = true;
+    else if(x>5) keystate[left] = true;
+    else {
+        delete keystate[right];
+        delete keystate[left];
+    }
+    if(y<-5) keystate[up] = true;
+    else delete keystate[up];
+    this.player.handleKeyInput(true);
+};

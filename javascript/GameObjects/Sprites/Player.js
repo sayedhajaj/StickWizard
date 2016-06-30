@@ -19,13 +19,14 @@ function Player(position, dimensions){
     })();
     this.currentAnimation = "idle";
     this.states.unshift(new IdleState());
+    this.fallHeight = 0;
     this.states[0].enter(this);
 }
 
 Player.prototype = new Sprite();
 
-Player.prototype.handleKeyInput = function(evt, keyup){
-    var newState = this.states[0].handleKeyInput(this, evt, keyup);
+Player.prototype.handleKeyInput = function(keyup){
+    var newState = this.states[0].handleKeyInput(this, keyup);
     if(newState) {
         this.states.unshift(newState);
         this.states[0].enter(this);
@@ -38,7 +39,5 @@ Player.prototype.handleMouseDown = function(x, y){
 
 
 Player.prototype.update = function(timePassed, blocks) {
-    /*if(!this.onGround) this.velocity.b = 5;
-    else this.velocity.b = 0;*/
     Sprite.prototype.update.call(this, timePassed);
 };

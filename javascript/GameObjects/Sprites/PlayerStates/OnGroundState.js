@@ -8,7 +8,7 @@ OnGroundState.prototype.update = function(player, timePassed){
     if(!player.onGround) return new FallingState();
 }
 
-OnGroundState.prototype.handleKeyInput = function(player, evt, keyup){
+OnGroundState.prototype.handleKeyInput = function(player, keyup){
     if(keyup){
         if(keystate[up]) return new JumpingState();
     }

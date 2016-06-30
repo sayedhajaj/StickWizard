@@ -1,5 +1,7 @@
 var canvas, ctx, gameTitle;
-var defaultWidth, defaultHeight, keystate, up=38, down=40, left=37, right=39, p=80, f=70, space=32, enter=13;
+var defaultWidth, defaultHeight;
+var keystate;
+var up=38, down=40, left=37, right=39, p=80, f=70, space=32, enter=13;
 var fullScreen;
 var heightScale, widthScale;
 var gpm, lm;
@@ -25,16 +27,14 @@ function main(gameName){
     lm = new LevelManager();
     camera = new Camera();
 
-    keystate = {};
-
     window.onresize = function(){setFullScreen();};
     document.onwebkitfullscreenchange = setFullScreen();
 	document.addEventListener("keydown", function(evt) {
 		keystate[evt.keyCode] = true;
-		gpm.handleKeyInput(evt, true);
+		gpm.handleKeyInput(true);
 	});
 	document.addEventListener("keyup", function(evt) {
-		gpm.handleKeyInput(evt, false);
+		gpm.handleKeyInput(false);
 		delete keystate[evt.keyCode];
 	});
 
@@ -80,6 +80,14 @@ function main(gameName){
 		gpm.handleDeviceOrientation(evt.gamma, evt.beta, evt.alpha);
 	});
 
+    window.addEventListener('devicemotion', function(evt){
+        gpm.handleDeviceMotion(
+            evt.acceleration.x, evt.acceleration.y, evt.acceleration.z,
+            evt.rotationRate.alpha, evt.rotationRate.beta, evt.rotationRate.gamma,
+            evt.interval
+        );
+    });
+
 	canvas.ondragstart = function(e) {
 	    if (e && e.preventDefault) { e.preventDefault(); }
 	    if (e && e.stopPropagation) { e.stopPropagation(); }
@@ -91,6 +99,10 @@ function main(gameName){
 	    if (e && e.stopPropagation) { e.stopPropagation(); }
 	    return false;
 	};
+
+    canvas.ondblclick = function() {
+        requestFullScreen();
+    };
 
 	document.body.ontouchstart = function(e) {
 	    if (e && e.preventDefault) { e.preventDefault(); }
@@ -248,3 +260,8 @@ ImageData.prototype.flipImageDataHorizontally = function(){
     destCtx.drawImage(imageCanvas, -this.width, 0);
     return destCtx.getImageData(0, 0, this.width, this.height);
 };
+
+
+function isLandscape(){
+    return (screen.width > screen.height);
+}

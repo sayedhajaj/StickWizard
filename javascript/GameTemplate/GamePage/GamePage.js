@@ -14,7 +14,7 @@ GamePage.prototype.draw = function(){
 
 };
 
-GamePage.prototype.handleKeyInput = function(evt, keyup){
+GamePage.prototype.handleKeyInput = function(keyup){
 
 };
 
@@ -43,5 +43,9 @@ GamePage.prototype.handleTouchMove = function(x, y){
 };
 
 GamePage.prototype.handleDeviceOrientation = function(x, y, z){
+
+};
+
+GamePage.prototype.handleDeviceMotion = function(x, y, z){
 
 };
