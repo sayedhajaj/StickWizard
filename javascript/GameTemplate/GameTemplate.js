@@ -1,6 +1,6 @@
 var canvas, ctx, gameTitle;
 var defaultWidth, defaultHeight;
-var keystate;
+var keystate, mouseStart, mouseEnd, mouseTraveled;
 var up=38, down=40, left=37, right=39, p=80, f=70, space=32, enter=13;
 var fullScreen;
 var heightScale, widthScale;
@@ -41,12 +41,16 @@ function main(gameName){
 	canvas.addEventListener('mousedown', function(evt){
 		var x = evt.offsetX;
 		var y = evt.offsetY;
+        if(!mouseTraveled) mouseTraveled = new Vector(0, 0);
+        mouseStart = new Vector(x, y);
 		gpm.handleMouseDown(x, y);
 	});
 
 	canvas.addEventListener('mouseup', function(evt){
 		var x = evt.offsetX;
 		var y = evt.offsetY;
+        mouseEnd = new Vector(x, y);
+        mouseTraveled = mouseEnd.SubtractVector(mouseStart);
 		gpm.handleMouseUp(x, y);
 	});
 	canvas.addEventListener('click', function(evt){
@@ -65,6 +69,16 @@ function main(gameName){
 		var touch = evt.touches[0];
 		var x = touch.pageX;
 		var y = touch.pageY;
+        mouseStart = new Vector(x, y);
+		gpm.handleTouchClick(x, y);
+	});
+
+    canvas.addEventListener('touchend', function(evt){
+		var touch = evt.changedTouches[0];
+		var x = touch.pageX;
+		var y = touch.pageY;
+        mouseEnd = new Vector(x, y);
+        mouseTraveled = mouseEnd.SubtractVector(mouseStart);
 		gpm.handleTouchClick(x, y);
 	});
 
@@ -72,6 +86,8 @@ function main(gameName){
 		var touch = evt.touches[0];
 		var x = touch.pageX;
 		var y = touch.pageY;
+        mouseEnd = new Vector(x, y);
+        mouseTraveled = mouseEnd.SubtractVector(mouseStart);
 		evt.preventDefault();
 		gpm.handleTouchMove(x, y);
 	});

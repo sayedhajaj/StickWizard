@@ -21,8 +21,7 @@ Vector.prototype.Length = function () {
 
 Vector.prototype.Normalize = function (){
 	var length = this.Length();
-	this.a/=length;
-	this.b/=length;
+    return new Vector(this.a/length, this.b/length);
 };
 
 Vector.prototype.DotProduct = function(vector2) {

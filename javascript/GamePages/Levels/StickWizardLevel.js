@@ -81,22 +81,26 @@ StickWizardLevel.prototype.handleKeyInput = function(keyup){
 		}
     }
     this.player.handleKeyInput(keyup);
-}
-
-StickWizardLevel.prototype.handleMouseDown = function(x, y){
-    //this.player.handleMouseDown(x, y);
 };
-StickWizardLevel.prototype.handleTouchDown = function(x, y){StickWizardLevel.prototype.handleMouseDown(x, y);};
-StickWizardLevel.prototype.handleTouchClick = function(x, y){StickWizardLevel.prototype.handleMouseDown(x, y);};
 
-StickWizardLevel.prototype.handleDeviceMotion = function(x, y, z, ralpha, rbeta, rgamma, interval){
-    if(x<-5) keystate[right] = true;
-    else if(x>5) keystate[left] = true;
+StickWizardLevel.prototype.handleTouchMove = function(x, y){
+    if(mouseTraveled.b < 0) keystate[up] = true;
+    else delete keystate[up];
+    if(mouseTraveled.a<0) keystate[left] = true;
+    else if(mouseTraveled.a>0) keystate[right] = true;
     else {
+        this.player.handleKeyInput(false);
         delete keystate[right];
         delete keystate[left];
     }
-    if(y<-5) keystate[up] = true;
-    else delete keystate[up];
+
     this.player.handleKeyInput(true);
+};
+
+StickWizardLevel.prototype.handleTouchClick = function(x, y){
+    this.player.handleKeyInput(false);
+    delete keystate[right];
+    delete keystate[left];
+    delete keystate[up];
+
 };
