@@ -7,7 +7,7 @@ function Platform(x, y, width, height){
 
     this.handleCollision = function(player){
         this.putOnGround(player);
-    }
+    };
 }
 
 Platform.prototype = new Block();
