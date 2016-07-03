@@ -10,7 +10,9 @@ Sprite.prototype = new GameObject();
 
 Sprite.prototype.update = function(timePassed){
     GameObject.prototype.update.call(this, timePassed);
-    var newState = this.states[0].update(this, timePassed);
+    var args = Array.prototype.slice.call(arguments);
+    args.shift();
+    var newState = this.states[0].update(this, timePassed, args);
     if(newState) {
         this.states.unshift(newState);
         this.states[0].enter(this);

@@ -34,18 +34,8 @@ StickWizardLevel.prototype.init = function(){
     camera.position = this.playerBoundPos.SubtractVector(this.player.position);
 };
 
-
-StickWizardLevel.prototype.update = function(delta){
-    this.player.update(delta);
-    this.player.onGround = false;
-    for (var wall of this.walls) {
-        if(wall.collide(this.player)) {
-            wall.handleCollision(this.player);
-            if(wall.onGround(this.player)) wall.putOnGround(this.player);
-        }
-    }
-
-    screenPos = this.player.position.AddVector(camera.position);
+StickWizardLevel.prototype.cameraScroll = function(){
+    var screenPos = this.player.position.AddVector(camera.position);
 
     if(screenPos.a < this.playerBoundPos.a) camera.velocity.a = Math.abs(this.player.velocity.a);
     else if(screenPos.a > this.playerBoundPos.a+this.playerBoundSize.a) camera.velocity.a = -Math.abs(this.player.velocity.a);
@@ -54,6 +44,12 @@ StickWizardLevel.prototype.update = function(delta){
     if(screenPos.b<this.playerBoundPos.b) camera.velocity.b = Math.abs(this.player.velocity.b);
     else if(screenPos.b>=this.playerBoundPos.b+this.playerBoundSize.b) camera.velocity.b = -Math.abs(this.player.velocity.b);
     else camera.velocity.b = 0;
+};
+
+
+StickWizardLevel.prototype.update = function(delta){
+    this.player.update(delta, this.walls);
+    this.cameraScroll();
     camera.update();
 
 };
@@ -84,10 +80,10 @@ StickWizardLevel.prototype.handleKeyInput = function(keyup){
 };
 
 StickWizardLevel.prototype.handleTouchMove = function(x, y){
-    if(mouseTraveled.b < 0) keystate[up] = true;
+    if(mouseTraveled.b < -this.player.dimensions.b/2) keystate[up] = true;
     else delete keystate[up];
-    if(mouseTraveled.a<0) keystate[left] = true;
-    else if(mouseTraveled.a>0) keystate[right] = true;
+    if(mouseTraveled.a<-this.player.dimensions.a/2) keystate[left] = true;
+    else if(mouseTraveled.a>this.player.dimensions.a/2) keystate[right] = true;
     else {
         this.player.handleKeyInput(false);
         delete keystate[right];

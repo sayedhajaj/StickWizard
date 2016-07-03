@@ -203,12 +203,22 @@ function play(){
 
 
 function requestFullScreen(){
-    if(canvas.requestFullscreen) canvas.requestFullscreen();
-    else if(canvas.mozRequestFullScreen) canvas.mozRequestFullScreen();
-    else if(canvas.webkitRequestFullscreen) canvas.webkitRequestFullscreen();
-    else if(canvas.msRequestFullscreen) canvas.msRequestFullscreen();
+    if(document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement) exitFullScreen();
+    else {
+        if(canvas.requestFullscreen) canvas.requestFullscreen();
+        else if(canvas.mozRequestFullScreen) canvas.mozRequestFullScreen();
+        else if(canvas.webkitRequestFullscreen) canvas.webkitRequestFullscreen();
+        else if(canvas.msRequestFullscreen) canvas.msRequestFullscreen();
+    }
 }
 
+
+function exitFullScreen(){
+    if(document.exitFullscreen) document.exitFullscreen();
+    else if(document.mozCancelFullScreen) document.mozCancelFullScreen();
+    else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
+    else if(document.msExitFullscreen) document.msExitFullscreen();
+}
 function loadImages(onFinished, sources){
     var images = {};
     var loadedImages = 0;

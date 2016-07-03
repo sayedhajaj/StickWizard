@@ -10,9 +10,11 @@ JumpingState.prototype.enter = function(player){
     player.setAnimation("jump");
 };
 
-JumpingState.prototype.update = function(player, timePassed){
+JumpingState.prototype.update = function(player, timePassed, args){
     this.jumpTime += timePassed;
     this.jumpFrame++;
     if(this.jumpTime >= 400) return new FallingState();
+    //else console.log(this.jumpTime);
     if(player.velocity.b > -4) player.velocity.b -= Math.floor(2*Math.cos(this.jumpFrame/60));
+    PlayerState.prototype.update(player, timePassed, args);
 };

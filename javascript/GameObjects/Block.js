@@ -28,7 +28,7 @@ function Block(position, dimensions){
         if(p1<p2) return p2-p1+d1;
         if(p1>p2) return p1-p2+d2;
         return 0;
-    }
+    };
 
     this.handleCollision = function(gameObject){
         var xOverlap = this.getOverlap(gameObject.position.a, this.position.a, gameObject.dimensions.a, this.dimensions.a);

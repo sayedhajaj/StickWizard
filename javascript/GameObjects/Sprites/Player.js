@@ -33,11 +33,6 @@ Player.prototype.handleKeyInput = function(keyup){
     }
 };
 
-Player.prototype.handleMouseDown = function(x, y){
-
-};
-
-
 Player.prototype.update = function(timePassed, blocks) {
-    Sprite.prototype.update.call(this, timePassed);
+    Sprite.prototype.update.call(this, timePassed, blocks);
 };

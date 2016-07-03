@@ -11,5 +11,4 @@ function Camera(){
         this.velocity = new Vector(0, 0);
     };
 
-
 }
