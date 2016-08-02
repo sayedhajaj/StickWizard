@@ -41,15 +41,15 @@ function main(gameName){
 	canvas.addEventListener('mousedown', function(evt){
 		var x = evt.offsetX;
 		var y = evt.offsetY;
-        if(!mouseTraveled) mouseTraveled = new Vector(0, 0);
-        mouseStart = new Vector(x, y);
+        if(!mouseTraveled) mouseTraveled = new Vector2D(0, 0);
+        mouseStart = new Vector2D(x, y);
 		gpm.handleMouseDown(x, y);
 	});
 
 	canvas.addEventListener('mouseup', function(evt){
 		var x = evt.offsetX;
 		var y = evt.offsetY;
-        mouseEnd = new Vector(x, y);
+        mouseEnd = new Vector2D(x, y);
         mouseTraveled = mouseEnd.SubtractVector(mouseStart);
 		gpm.handleMouseUp(x, y);
 	});
@@ -69,7 +69,7 @@ function main(gameName){
 		var touch = evt.touches[0];
 		var x = touch.pageX;
 		var y = touch.pageY;
-        mouseStart = new Vector(x, y);
+        mouseStart = new Vector2D(x, y);
 		gpm.handleTouchClick(x, y);
 	});
 
@@ -77,7 +77,7 @@ function main(gameName){
 		var touch = evt.changedTouches[0];
 		var x = touch.pageX;
 		var y = touch.pageY;
-        mouseEnd = new Vector(x, y);
+        mouseEnd = new Vector2D(x, y);
         mouseTraveled = mouseEnd.SubtractVector(mouseStart);
 		gpm.handleTouchClick(x, y);
 	});
@@ -86,7 +86,7 @@ function main(gameName){
 		var touch = evt.touches[0];
 		var x = touch.pageX;
 		var y = touch.pageY;
-        mouseEnd = new Vector(x, y);
+        mouseEnd = new Vector2D(x, y);
         mouseTraveled = mouseEnd.SubtractVector(mouseStart);
 		evt.preventDefault();
 		gpm.handleTouchMove(x, y);
@@ -165,7 +165,6 @@ function setFullScreen(){
     } else {
         canvas.width=defaultWidth;
         canvas.height=defaultHeight;
-
         widthScale = 1;
         heightScale = 1;
     }
@@ -264,12 +263,12 @@ ImageData.prototype.resizeImageData = function(dimensions){
     var imageCtx = imageCanvas.getContext("2d");
     imageCtx.putImageData(this, 0, 0);
     var destCanvas = document.createElement('canvas');
-    destCanvas.width = dimensions.a;
-    destCanvas.height = dimensions.b;
+    destCanvas.width = dimensions.x;
+    destCanvas.height = dimensions.y;
     destCtx = destCanvas.getContext("2d");
-    destCtx.scale(dimensions.a/this.width, dimensions.b/this.height);
+    destCtx.scale(dimensions.x/this.width, dimensions.y/this.height);
     destCtx.drawImage(imageCanvas, 0, 0);
-    return destCtx.getImageData(0, 0, dimensions.a, dimensions.b);
+    return destCtx.getImageData(0, 0, dimensions.x, dimensions.y);
 };
 
 ImageData.prototype.flipImageDataHorizontally = function(){

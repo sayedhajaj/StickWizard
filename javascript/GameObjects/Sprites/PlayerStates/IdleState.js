@@ -5,7 +5,7 @@ function IdleState(){
 IdleState.prototype = new OnGroundState();
 
 IdleState.prototype.enter = function(player){
-    player.velocity = new Vector(0, 0);
+    player.velocity = new Vector2D(0, 0);
     player.setAnimation("idle");
 };
 

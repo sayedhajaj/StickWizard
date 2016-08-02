@@ -1,102 +1,101 @@
-function StickWizardLevel(){
-    Level.call(this);
-    this.walls = [];
-    this.enemies = [];
-    this.levelString = ``;
-    this.blocksize = 40;
-    this.playerBoundPos = new Vector(220, 140);
-    this.playerBoundSize = new Vector(120, 110);
-    this.parseLevel = function(){
+class StickWizardLevel extends Level {
+    constructor(){
+        super();
+        this.walls = [];
+        this.enemies = [];
+        this.levelString = ``;
+        this.blocksize = 40;
+        this.playerBoundPos = new Vector2D(220, 140);
+        this.playerBoundSize = new Vector2D(120, 110);
+    }
+
+    parseLevel() {
         var level = this.levelString.split("\n");
         for(var y = 0; y < level.length; y++){
             for(var x = 0; x < level[y].length; x++){
                 if(level[y][x].toUpperCase() === "W")
-                    this.walls.push(new Block(new Vector(x*this.blocksize, y*this.blocksize), new Vector(this.blocksize, this.blocksize)));
+                    this.walls.push(new Block(new Vector2D(x*this.blocksize, y*this.blocksize), new Vector2D(this.blocksize, this.blocksize)));
                 if(level[y][x].toUpperCase() === "F")
-                    this.walls.push(new Platform(new Vector(x*this.blocksize, y*this.blocksize), new Vector(this.blocksize, this.blocksize)));
+                    this.walls.push(new Platform(new Vector2D(x*this.blocksize, y*this.blocksize), new Vector2D(this.blocksize, this.blocksize)));
                 //if(level[y][x].toUpperCase() === "E")
                     //this.enemies.push(new (x*this.blocksize, y*this.blocksize, this.blocksize, this.blocksize));
                 if(level[y][x].toUpperCase() === "P")
-                    this.player = new Player(new Vector(x*this.blocksize, y*this.blocksize), new Vector(this.blocksize, this.blocksize));
+                    this.player = new Player(new Vector2D(x*this.blocksize, y*this.blocksize), new Vector2D(this.blocksize, this.blocksize));
 
             }
         }
-    };
-}
-
-StickWizardLevel.prototype = new Level();
-
-StickWizardLevel.prototype.init = function(){
-    camera.reset();
-    this.walls = [];
-    this.enemies = [];
-    this.parseLevel();
-    camera.position = this.playerBoundPos.SubtractVector(this.player.position);
-};
-
-StickWizardLevel.prototype.cameraScroll = function(){
-    var screenPos = this.player.position.AddVector(camera.position);
-
-    if(screenPos.a < this.playerBoundPos.a) camera.velocity.a = Math.abs(this.player.velocity.a);
-    else if(screenPos.a > this.playerBoundPos.a+this.playerBoundSize.a) camera.velocity.a = -Math.abs(this.player.velocity.a);
-    else camera.velocity.a = 0;
-
-    if(screenPos.b<this.playerBoundPos.b) camera.velocity.b = Math.abs(this.player.velocity.b);
-    else if(screenPos.b>=this.playerBoundPos.b+this.playerBoundSize.b) camera.velocity.b = -Math.abs(this.player.velocity.b);
-    else camera.velocity.b = 0;
-};
-
-
-StickWizardLevel.prototype.update = function(delta){
-    this.player.update(delta, this.walls);
-    this.cameraScroll();
-    camera.update();
-
-};
-
-
-StickWizardLevel.prototype.draw = function(){
-    ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = ctx.strokeStyle = "blue";
-    ctx.save();
-    //ctx.strokeRect(this.playerBoundPos.a, this.playerBoundPos.b, this.playerBoundSize.a, this.playerBoundSize.b);
-    ctx.translate(camera.position.a, camera.position.b);
-    for (var wall of this.walls) {
-        wall.draw();
     }
-    this.player.draw();
-    ctx.restore();
-};
 
-
-StickWizardLevel.prototype.handleKeyInput = function(keyup){
-	if(keyup){
-		if (keystate[f]) {
-            requestFullScreen();
-		}
+    init(){
+        camera.reset();
+        this.walls = [];
+        this.enemies = [];
+        this.parseLevel();
+        camera.position = this.playerBoundPos.SubtractVector(this.player.position);
     }
-    this.player.handleKeyInput(keyup);
-};
 
-StickWizardLevel.prototype.handleTouchMove = function(x, y){
-    if(mouseTraveled.b < -this.player.dimensions.b/2) keystate[up] = true;
-    else delete keystate[up];
-    if(mouseTraveled.a<-this.player.dimensions.a/2) keystate[left] = true;
-    else if(mouseTraveled.a>this.player.dimensions.a/2) keystate[right] = true;
-    else {
+    cameraScroll(){
+        var screenPos = this.player.position.AddVector(camera.position);
+
+        if(screenPos.x < this.playerBoundPos.x) camera.velocity.x = Math.abs(this.player.velocity.x);
+        else if(screenPos.x > this.playerBoundPos.x+this.playerBoundSize.x) camera.velocity.x = -Math.abs(this.player.velocity.x);
+        else camera.velocity.x = 0;
+
+        if(screenPos.y<this.playerBoundPos.y) camera.velocity.y = Math.abs(this.player.velocity.y);
+        else if(screenPos.y>=this.playerBoundPos.y+this.playerBoundSize.y) camera.velocity.y = -Math.abs(this.player.velocity.y);
+        else camera.velocity.y = 0;
+    }
+
+    update(delta) {
+        this.player.update(delta, this.walls);
+        this.cameraScroll();
+        camera.update();
+    }
+
+    draw() {
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = ctx.strokeStyle = "blue";
+        ctx.save();
+        ctx.strokeRect(this.playerBoundPos.x, this.playerBoundPos.y, this.playerBoundSize.x, this.playerBoundSize.y);
+        ctx.translate(camera.position.x, camera.position.y);
+        //ctx.setTransform(widthScale, 0, 0, heightScale, camera.position.x, camera.position.y);
+        for (var wall of this.walls) {
+            wall.draw();
+        }
+        this.player.draw();
+        ctx.restore();
+    }
+
+    handleKeyInput(keyup) {
+    	if(keyup){
+    		if (keystate[f]) {
+                requestFullScreen();
+    		}
+        }
+        this.player.handleKeyInput(keyup);
+    }
+
+    handleTouchMovefunction(x, y){
+        if(mouseTraveled.y < -this.player.dimensions.y/2) keystate[up] = true;
+        else delete keystate[up];
+        if(mouseTraveled.x<-this.player.dimensions.x/2) keystate[left] = true;
+        else if(mouseTraveled.x>this.player.dimensions.x/2) keystate[right] = true;
+        else {
+            this.player.handleKeyInput(false);
+            delete keystate[right];
+            delete keystate[left];
+        }
+
+        this.player.handleKeyInput(true);
+    }
+
+    handleTouchClick(x, y) {
         this.player.handleKeyInput(false);
         delete keystate[right];
         delete keystate[left];
+        delete keystate[up];
+
     }
 
-    this.player.handleKeyInput(true);
-};
-
-StickWizardLevel.prototype.handleTouchClick = function(x, y){
-    this.player.handleKeyInput(false);
-    delete keystate[right];
-    delete keystate[left];
-    delete keystate[up];
-
-};
+}
