@@ -18,8 +18,8 @@ Sprite.prototype.update = function(timePassed){
         this.states[0].enter(this);
     }
     this.animations[this.currentAnimation].update(timePassed);
-    if(this.velocity.a<0) this.facingRight = false;
-    if(this.velocity.a>0) this.facingRight = true;
+    if(this.velocity.x<0) this.facingRight = false;
+    if(this.velocity.x>0) this.facingRight = true;
 
 };
 
@@ -35,5 +35,5 @@ Sprite.prototype.draw = function(){
     var imageToDraw = this.animations[this.currentAnimation].getImage();
     if(!this.facingRight) imageToDraw = imageToDraw.flipImageDataHorizontally();
     tempCtx.putImageData(imageToDraw, 0, 0);
-    ctx.drawImage(tempCanv, this.position.a, this.position.b);
+    ctx.drawImage(tempCanv, this.position.x, this.position.y);
 };

@@ -7,20 +7,20 @@ function Block(position, dimensions){
         function interSects(p1, p2, d1, d2){
             return (p1+d1 <= p2+d2 && p1+d1 >= p2 || p2+d2 < p1+d1 && p2+d2 > p1);
         }
-        return interSects(position.a, this.position.a, dimensions.a, this.dimensions.a) &&
-        interSects(position.b, this.position.b, dimensions.b, this.dimensions.b);
+        return interSects(position.x, this.position.x, dimensions.x, this.dimensions.x) &&
+        interSects(position.y, this.position.y, dimensions.y, this.dimensions.y);
     };
 
     this.onGround = function(gameObject){
-        var bottom = gameObject.position.b+gameObject.dimensions.b;
-        var xOverlap = this.getOverlap(gameObject.position.a, this.position.a, gameObject.dimensions.a, this.dimensions.a);
-        var yOverlap = this.getOverlap(gameObject.position.b, this.position.b, gameObject.dimensions.b, this.dimensions.b);
+        var bottom = gameObject.position.y+gameObject.dimensions.y;
+        var xOverlap = this.getOverlap(gameObject.position.x, this.position.x, gameObject.dimensions.x, this.dimensions.x);
+        var yOverlap = this.getOverlap(gameObject.position.y, this.position.y, gameObject.dimensions.y, this.dimensions.y);
         return (xOverlap < yOverlap &&
-        (bottom >= this.position.b && bottom <= this.position.b+this.dimensions.b));
+        (bottom >= this.position.y && bottom <= this.position.y+this.dimensions.y));
     };
 
     this.putOnGround = function(player){
-        player.position.b = this.position.b-player.dimensions.b;
+        player.position.y = this.position.y-player.dimensions.y;
         player.onGround = true;
     };
 
@@ -31,14 +31,14 @@ function Block(position, dimensions){
     };
 
     this.handleCollision = function(gameObject){
-        var xOverlap = this.getOverlap(gameObject.position.a, this.position.a, gameObject.dimensions.a, this.dimensions.a);
-        var yOverlap = this.getOverlap(gameObject.position.b, this.position.b, gameObject.dimensions.b, this.dimensions.b);
+        var xOverlap = this.getOverlap(gameObject.position.x, this.position.x, gameObject.dimensions.x, this.dimensions.x);
+        var yOverlap = this.getOverlap(gameObject.position.y, this.position.y, gameObject.dimensions.y, this.dimensions.y);
         if(xOverlap > yOverlap){
-            if(gameObject.position.a<this.position.a) gameObject.position.a = this.position.a-gameObject.dimensions.a;
-            else if(gameObject.position.a>this.position.a) gameObject.position.a = this.position.a+this.dimensions.a;
+            if(gameObject.position.x<this.position.x) gameObject.position.x = this.position.x-gameObject.dimensions.x;
+            else if(gameObject.position.x>this.position.x) gameObject.position.x = this.position.x+this.dimensions.x;
         } else {
-            if(gameObject.position.b<this.position.b) gameObject.position.b = this.position.b-gameObject.dimensions.b;
-            else if(gameObject.position.b>this.position.b) gameObject.position.b = this.position.b+this.dimensions.b;
+            if(gameObject.position.y<this.position.y) gameObject.position.y = this.position.y-gameObject.dimensions.y;
+            else if(gameObject.position.y>this.position.y) gameObject.position.y = this.position.y+this.dimensions.y;
         }
 
     };
@@ -50,5 +50,6 @@ function Block(position, dimensions){
 Block.prototype = new GameObject();
 
 Block.prototype.draw = function(){
-    ctx.drawImage(this.image, this.position.a, this.position.b, this.dimensions.a, this.dimensions.b);
+    //ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.drawImage(this.image, this.position.x, this.position.y, this.dimensions.x, this.dimensions.y);
 };

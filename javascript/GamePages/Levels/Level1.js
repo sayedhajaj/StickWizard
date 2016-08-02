@@ -1,6 +1,8 @@
-function Level1(){
-    StickWizardLevel.call(this);
-    this.levelString =
+class Level1 extends StickWizardLevel {
+    constructor(){
+        super();
+
+        this.levelString =
 `WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W                                                                          W
 W                                                                          W
@@ -18,14 +20,13 @@ W                                                                          W
 W W                                             W                          W
 WWWWWWWWWW  WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW    WWWWWWWWWWWWWWWW
 W          WW                                          W   WW              W
-W                    WWWWWW                            W    W              W
-W       WW       FF  WWWWWW                            WW   W              W
-W                    WWWWWW  FF                        W    W              W
-W           FFFFFF   WWWWWW       FF                   W   WW              W
-W                    WWWWWW                            W                   W
-W    FFFFF           WWWWWW   FFF                      WW                  W
-W                    WWWWWW                                                W
+W                    WWWWWWW                           W    W              W
+W       WW       FF  WWWWWWW                           WW   W              W
+W                    WWWWWWW  FF                       W    W              W
+W           FFFFFF   WWWWWWW       FF                  W   WW              W
+W                    WWWWWWW                           W                   W
+W    FFFFF           WWWWWWW   FFF                     WW                  W
+W                    WWWWWWW                                               W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW`;
-};
-
-Level1.prototype = StickWizardLevel.prototype;
+    }
+}

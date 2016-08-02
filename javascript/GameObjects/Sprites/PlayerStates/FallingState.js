@@ -14,8 +14,8 @@ FallingState.prototype.enter = function(player){
 FallingState.prototype.update = function(player, timePassed, args){
     this.fallTime += timePassed;
     this.fallFrame++;
-    if(player.velocity.b < 7) player.velocity.b += Math.floor(4*Math.cos(this.fallFrame/60));
-    player.fallHeight += player.velocity.b;
+    if(player.velocity.y < 7) player.velocity.y += Math.floor(4*Math.cos(this.fallFrame/60));
+    player.fallHeight += player.velocity.y;
     if(player.onGround) return new IdleState();
     PlayerState.prototype.update(player, timePassed, args);
 };

@@ -19,10 +19,10 @@ PlayerState.prototype.update = function(player, timePassed, args){
 
 PlayerState.prototype.handleKeyInput = function(player, keyup){
     if(keyup){
-        if(keystate[right]) player.velocity.a = 5;
-        if(keystate[left]) player.velocity.a = -5;
+        if(keystate[right]) player.velocity.x = 5;
+        if(keystate[left]) player.velocity.x = -5;
     } else {
-        if(keystate[right] || keystate[left]) player.velocity.a = 0;
+        if(keystate[right] || keystate[left]) player.velocity.x = 0;
     }
     return null;
 };
