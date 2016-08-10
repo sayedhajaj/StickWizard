@@ -35,5 +35,7 @@ Sprite.prototype.draw = function(){
     var imageToDraw = this.animations[this.currentAnimation].getImage();
     if(!this.facingRight) imageToDraw = imageToDraw.flipImageDataHorizontally();
     tempCtx.putImageData(imageToDraw, 0, 0);
+    this.transform.contextTransform(ctx);
     ctx.drawImage(tempCanv, this.position.x, this.position.y);
+    this.transform.getInverse().contextTransform(ctx);
 };
