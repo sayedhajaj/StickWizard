@@ -27,8 +27,8 @@ function main(gameName){
     lm = new LevelManager();
     camera = new Camera();
 
-    window.onresize = function(){setFullScreen();};
-    document.onwebkitfullscreenchange = setFullScreen();
+    window.onresize = function(){resizeCanvas();};
+    document.onwebkitfullscreenchange = resizeCanvas();
 	document.addEventListener("keydown", function(evt) {
 		keystate[evt.keyCode] = true;
 		gpm.handleKeyInput(true);
@@ -143,25 +143,29 @@ function create2DArray(sizes){
 }
 
 function toRadians(degrees){
-	return degrees * Math.PI / 180;
+	return Math.divideDec(Math.multDec(degrees, Math.PI), 180);
 }
 
 function toDegrees(radians){
-	return radians * 180 / Math.PI;
+	return Math.divideDec(Math.divideDec(radians, 180), Math.PI);
 }
 
-function setFullScreen(){
+function resizeCanvas(){
     if(fullScreen){
-        if ((window.innerWidth/canvas.width)<(window.innerHeight/canvas.height)) {
-            canvas.height*=window.innerWidth/canvas.width;
-            canvas.width=window.innerWidth;
+        widthScale = window.innerWidth/defaultWidth;
+        heightScale = window.innerHeight/defaultHeight;
+        if (widthScale < heightScale) {
+            canvas.style.height = defaultHeight * widthScale + "px";
+            canvas.style.width = window.innerWidth + "px";
+            heightScale = widthScale;
+        } else if (widthScale > heightScale){
+            canvas.style.width = defaultWidth * heightScale + "px";
+            canvas.style.height = window.innerHeight + "px";
+            widthScale = heightScale;
         } else {
-            canvas.width*=window.innerHeight/canvas.height;
-            canvas.height=window.innerHeight;
+            canvas.style.width = window.innerWidth + "px";
+            canvas.style.height = window.innerHeight + "px";
         }
-        widthScale = canvas.width/defaultWidth;
-        heightScale = canvas.height/defaultHeight;
-        ctx.scale(widthScale, heightScale);
     } else {
         canvas.width=defaultWidth;
         canvas.height=defaultHeight;
@@ -169,7 +173,6 @@ function setFullScreen(){
         heightScale = 1;
     }
 
-    this.fullScreen=!this.fullScreen;
 }
 
 function play(){
@@ -209,6 +212,7 @@ function requestFullScreen(){
         else if(canvas.webkitRequestFullscreen) canvas.webkitRequestFullscreen();
         else if(canvas.msRequestFullscreen) canvas.msRequestFullscreen();
     }
+    fullScreen = true;
 }
 
 
@@ -217,6 +221,7 @@ function exitFullScreen(){
     else if(document.mozCancelFullScreen) document.mozCancelFullScreen();
     else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
     else if(document.msExitFullscreen) document.msExitFullscreen();
+    fullScreen = false;
 }
 function loadImages(onFinished, sources){
     var images = {};
@@ -289,4 +294,21 @@ ImageData.prototype.flipImageDataHorizontally = function(){
 
 function isLandscape(){
     return (screen.width > screen.height);
+}
+
+
+Math.multDec = function ( a, b ) {
+    return Math.round((a * b) * 10) / 10;
+}
+
+Math.divideDec = function ( a, b ) {
+    return Math.round((a / b) * 10) / 10;
+}
+
+Math.subtractDec = function ( a, b ) {
+    return Math.round((a - b) * 10) / 10;
+}
+
+Math.addDec = function ( a, b ) {
+    return Math.round((a + b) * 10) / 10;
 }

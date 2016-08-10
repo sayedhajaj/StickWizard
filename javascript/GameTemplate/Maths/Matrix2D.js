@@ -8,8 +8,7 @@ class Matrix2D {
 
     copy() {
         var result = new Matrix2D();
-        result.setRow(this.getRow(0), 0);
-        result.setRow(this.getRow(1), 1);
+        result.setRows(this.getRows());
         return result;
     }
 
@@ -21,6 +20,13 @@ class Matrix2D {
         temp = result.elements[0][1] * -1;
         result.elements[0][1] = result.elements[1][0] *-1;
         result.elements[1][0] = temp;
+        return result;
+    }
+
+    transpose() {
+        var result = this.copy();
+        result.setColumn(this.getRow(0), 0);
+        result.setColumn(this.getRow(1), 1);
         return result;
     }
 
@@ -55,12 +61,12 @@ class Matrix2D {
     }
 
     getDeterminant() {
-        return (this.elements[0][0] * this.elements[1][1]) - (this.elements[0][1] * this.elements[1][0]);
+        return (Math.subtractDec(Math.multDec(this.elements[0][0], this.elements[1][1]), Math.multDec(this.elements[0][1], this.elements[1][0])));
     }
 
     getInverse() {
         var det = this.getDeterminant();
-        return this.invert().multiply(1/det);
+        return this.invert().multiply(Math.divideDec(1, det));
     }
 
     setRow(row, pos) {
@@ -77,13 +83,13 @@ class Matrix2D {
 
     setRows(rows) {
         for (var i = 0; i < rows.length; i++) {
-            setRow(rows[i], i);
+            this.setRow(rows[i], i);
         }
     }
 
     setColumns(cols) {
         for (var i = 0; i < cols.length; i++) {
-            setColumns(cols[i], i);
+            this.setColumn(cols[i], i);
         }
     }
 
@@ -133,10 +139,3 @@ class Matrix2D {
     }
 
 }
-
-var matrix = new Matrix2D();
-matrix.elements = [[2, 4], [6, 7]];
-var matrix2 = new Matrix2D();
-matrix2.elements = [[6, 7], [2, 4]];
-var matrix3 = Matrix2D.Add(matrix, matrix2);
-console.log(matrix3.elements);
