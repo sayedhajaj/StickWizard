@@ -7,7 +7,7 @@ function Camera() {
     this.update = function() {
         if(this.enabled) {
             this.position = this.position.AddVector(this.velocity);
-            this.transform = Matrix3D.translation(new Vector2D(this.position.x, this.position.y))
+            if(this.velocity.Length() != 0) this.setTransforms();
         }
     };
 
@@ -16,12 +16,18 @@ function Camera() {
     }
 
     this.resetContextTransform = function() {
-        transform.getInverse().setContextTransform(ctx)
+        Matrix3D.Identity().setContextTransform(ctx);
     }
 
     this.reset = function() {
         this.position = new Vector2D(0, 0);
         this.velocity = new Vector2D(0, 0);
+        this.setTransforms();
     };
+
+    this.setTransforms = function() {
+        if(!this.enabled) return;
+        this.transform = Matrix3D.translation(new Vector2D(this.position.x, this.position.y));
+    }
 
 }

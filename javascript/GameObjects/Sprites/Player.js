@@ -35,4 +35,13 @@ Player.prototype.handleKeyInput = function(keyup){
 
 Player.prototype.update = function(timePassed, blocks) {
     Sprite.prototype.update.call(this, timePassed, blocks);
+    /*if(this.velocity.Length()!=0) {
+        var origin = new Vector2D(0, 0);
+        origin = this.position.AddVector(this.dimensions.Multiply(0.5));
+        this.transform = Matrix3D.translation(origin.Multiply(-1));
+        this.transform = Matrix3D.Multiply(Matrix3D.rotation(180), this.transform);
+        this.transform = Matrix3D.Multiply(Matrix3D.translation(origin.Multiply(1)), this.transform);
+    }*/
+
+
 };

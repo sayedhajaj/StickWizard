@@ -47,45 +47,48 @@ function main(gameName){
 	});
 
 	canvas.addEventListener('mouseup', function(evt){
-		var x = evt.offsetX;
-		var y = evt.offsetY;
+		var x = Math.round(Math.divideDec(evt.offsetX, widthScale));
+		var y = Math.round(Math.divideDec(evt.offsetY, heightScale));
         mouseEnd = new Vector2D(x, y);
         mouseTraveled = mouseEnd.SubtractVector(mouseStart);
 		gpm.handleMouseUp(x, y);
 	});
 	canvas.addEventListener('click', function(evt){
-		var x = evt.offsetX;
-		var y = evt.offsetY;
+		var x = Math.round(Math.divideDec(evt.offsetX, widthScale));
+		var y = Math.round(Math.divideDec(evt.offsetY, heightScale));
 		gpm.handleMouseClick(x, y);
 	});
 
 	canvas.addEventListener('mousemove', function(evt){
-		var x = evt.offsetX;
-		var y = evt.offsetY;
+		var x = Math.round(Math.divideDec(evt.offsetX, widthScale));
+		var y = Math.round(Math.divideDec(evt.offsetY, heightScale));
 		gpm.handleMouseMove(x, y);
 	});
 
 	canvas.addEventListener('touchstart', function(evt){
 		var touch = evt.touches[0];
-		var x = touch.pageX;
-		var y = touch.pageY;
+        var rect = evt.target.getBoundingClientRect();
+        var x = Math.round(Math.divideDec(touch.pageX - rect.left, widthScale));
+		var y = Math.round(Math.divideDec(touch.pageY - rect.top, heightScale));
         mouseStart = new Vector2D(x, y);
-		gpm.handleTouchClick(x, y);
+		gpm.handleTouchStart(x, y);
 	});
 
     canvas.addEventListener('touchend', function(evt){
 		var touch = evt.changedTouches[0];
-		var x = touch.pageX;
-		var y = touch.pageY;
+        var rect = evt.target.getBoundingClientRect();
+        var x = Math.round(Math.divideDec(touch.pageX - rect.left, widthScale));
+		var y = Math.round(Math.divideDec(touch.pageY - rect.top, heightScale));
         mouseEnd = new Vector2D(x, y);
         mouseTraveled = mouseEnd.SubtractVector(mouseStart);
-		gpm.handleTouchClick(x, y);
+		gpm.handleTouchEnd(x, y);
 	});
 
 	canvas.addEventListener('touchmove', function(evt){
 		var touch = evt.touches[0];
-		var x = touch.pageX;
-		var y = touch.pageY;
+        var rect = evt.target.getBoundingClientRect();
+        var x = Math.round(Math.divideDec(touch.pageX - rect.left, widthScale));
+		var y = Math.round(Math.divideDec(touch.pageY - rect.top, heightScale));
         mouseEnd = new Vector2D(x, y);
         mouseTraveled = mouseEnd.SubtractVector(mouseStart);
 		evt.preventDefault();
@@ -150,6 +153,10 @@ function toDegrees(radians){
 	return Math.divideDec(Math.divideDec(radians, 180), Math.PI);
 }
 
+function randomInRange(min, max) {
+    return min + Math.random() * (max - min);
+}
+
 function resizeCanvas(){
     if(fullScreen){
         widthScale = window.innerWidth/defaultWidth;
@@ -172,7 +179,6 @@ function resizeCanvas(){
         widthScale = 1;
         heightScale = 1;
     }
-
 }
 
 function play(){
@@ -185,12 +191,13 @@ function play(){
     var now = then = Date.now();
     var delta = 0;
     var gameLoop = function(){
+        then = now;
         now = Date.now();
         delta = now - then;
+        //console.log(Math.floor(1000/delta));
         var currentPage = gpm.currentPage;
         if(currentPage) currentPage.update(delta);
         if(currentPage) currentPage.draw();
-        then = now;
     }
     if (animFrame !== null) {
         var recursiveAnim = function() {
@@ -298,17 +305,35 @@ function isLandscape(){
 
 
 Math.multDec = function ( a, b ) {
-    return Math.round((a * b) * 10) / 10;
+    var atens = Math.pow(10,String(a).length - String(a).indexOf('.') - 1);
+    var btens = Math.pow(10,String(b).length - String(b).indexOf('.') - 1);
+    var result = (a * atens) * (b * btens) / (atens * btens);
+    return result;
 }
 
 Math.divideDec = function ( a, b ) {
-    return Math.round((a / b) * 10) / 10;
+    return Math.multDec(a, 100/(b*100));
 }
 
 Math.subtractDec = function ( a, b ) {
-    return Math.round((a - b) * 10) / 10;
+    return Math.addDec(a, -b);
 }
 
 Math.addDec = function ( a, b ) {
-    return Math.round((a + b) * 10) / 10;
+    var atens = Math.pow(10,String(a).length - String(a).indexOf('.') - 1);
+    var btens = Math.pow(10,String(b).length - String(b).indexOf('.') - 1);
+    var resultTens = Math.max(atens, btens);
+    return Math.round((a + b) * resultTens) / resultTens;
 }
+
+
+Array.prototype.shuffle = function() {
+    var i = 0, j = 0, temp = null;
+
+    for (i = this.length - 1; i > 0; i -= 1) {
+      j = Math.floor(Math.random() * (i + 1));
+      temp = this[i];
+      this[i] = this[j];
+      this[j] = temp;
+    }
+};

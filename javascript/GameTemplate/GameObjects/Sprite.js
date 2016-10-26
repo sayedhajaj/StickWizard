@@ -4,6 +4,9 @@ function Sprite(position, dimensions){
     this.animations = [];
     this.currentAnimation = "";
     this.facingRight = true;
+    this.sideOn = true;
+    this.tempCanvas = document.createElement('canvas');
+    this.tempCtx = this.tempCanvas.getContext("2d");
 }
 
 Sprite.prototype = new GameObject();
@@ -30,12 +33,11 @@ Sprite.prototype.setAnimation = function(animation){
 };
 
 Sprite.prototype.draw = function(){
-    var tempCanv = document.createElement('canvas');
-    var tempCtx = tempCanv.getContext("2d");
     var imageToDraw = this.animations[this.currentAnimation].getImage();
-    if(!this.facingRight) imageToDraw = imageToDraw.flipImageDataHorizontally();
-    tempCtx.putImageData(imageToDraw, 0, 0);
+    if(!this.facingRight && this.sideOn) imageToDraw = imageToDraw.flipImageDataHorizontally();
+    this.tempCtx.clearRect(0, 0, this.tempCanvas.width, this.tempCanvas.height);
+    this.tempCtx.putImageData(imageToDraw, 0, 0);
     this.transform.contextTransform(ctx);
-    ctx.drawImage(tempCanv, this.position.x, this.position.y);
+    ctx.drawImage(this.tempCanvas, this.position.x, this.position.y);
     this.transform.getInverse().contextTransform(ctx);
 };
