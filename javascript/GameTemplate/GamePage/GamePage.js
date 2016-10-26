@@ -34,7 +34,11 @@ GamePage.prototype.handleMouseMove = function(x, y){
 
 };
 
-GamePage.prototype.handleTouchClick = function(x, y){
+GamePage.prototype.handleTouchStart = function(x, y){
+
+};
+
+GamePage.prototype.handleTouchEnd = function(x, y){
 
 };
 

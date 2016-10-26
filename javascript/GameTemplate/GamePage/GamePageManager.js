@@ -24,8 +24,12 @@ GamePageManager.prototype.handleMouseMove = function(x, y){
     if(this.currentPage) this.currentPage.handleMouseMove(x, y);
 };
 
-GamePageManager.prototype.handleTouchClick = function(x, y){
-    if(this.currentPage) this.currentPage.handleTouchClick(x, y);
+GamePageManager.prototype.handleTouchStart = function(x, y){
+    if(this.currentPage) this.currentPage.handleTouchStart(x, y);
+};
+
+GamePageManager.prototype.handleTouchEnd = function(x, y){
+    if(this.currentPage) this.currentPage.handleTouchEnd(x, y);
 };
 
 GamePageManager.prototype.handleTouchMove = function(x, y){

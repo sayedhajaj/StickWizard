@@ -44,6 +44,7 @@ class StickWizardLevel extends Level {
         if(screenPos.y<this.playerBoundPos.y) camera.velocity.y = Math.abs(this.player.velocity.y);
         else if(screenPos.y>=this.playerBoundPos.y+this.playerBoundSize.y) camera.velocity.y = -Math.abs(this.player.velocity.y);
         else camera.velocity.y = 0;
+        camera.setTransforms();
     }
 
     update(delta) {
@@ -56,16 +57,15 @@ class StickWizardLevel extends Level {
         ctx.fillStyle = "white";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = ctx.strokeStyle = "blue";
-        ctx.save();
+        //ctx.save();
         ctx.strokeRect(this.playerBoundPos.x, this.playerBoundPos.y, this.playerBoundSize.x, this.playerBoundSize.y);
-        //ctx.translate(camera.position.x, camera.position.y);
         camera.transformContext();
-        ctx.setTransform(1, 0, 0, 1, camera.position.x, camera.position.y);
         for (var wall of this.walls) {
             wall.draw();
         }
         this.player.draw();
-        ctx.restore();
+        camera.resetContextTransform();
+        //ctx.restore();
     }
 
     handleKeyInput(keyup) {
@@ -91,7 +91,7 @@ class StickWizardLevel extends Level {
         this.player.handleKeyInput(true);
     }
 
-    handleTouchClick(x, y) {
+    handleTouchEnd(x, y) {
         this.player.handleKeyInput(false);
         delete keystate[right];
         delete keystate[left];

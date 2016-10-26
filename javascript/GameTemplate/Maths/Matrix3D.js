@@ -8,6 +8,12 @@ class Matrix3D extends Matrix2D {
         this.setRow(new Vector3D(0, 0, 0), 2);
     }
 
+	copy() {
+		var result = new Matrix3D();
+		result.setRows(this.getRows());
+		return result;
+	}
+
 	getCoFactorMatrix() {
 		var result = new Matrix3D();
         var row, col;
@@ -46,8 +52,7 @@ class Matrix3D extends Matrix2D {
 
 	getInverse() {
 		var det = this.getDeterminant();
-		return this.getCoFactorMatrix();
-		return this.getCoFactorMatrix().transpose().multiply(Math.divideDec(1, det));
+		return this.getCoFactorMatrix().transpose().multiply(1 / det);
 	}
 
 	getDeterminant() {
@@ -105,12 +110,12 @@ class Matrix3D extends Matrix2D {
 
 	setContextTransform(ctx) {
 		var elms = this.getTransformElements();
-		ctx.setTransform(elms[0], elms[1], elms[2], elms[3], elms[4], elms[5])
+		ctx.setTransform(elms[0], elms[1], elms[2], elms[3], elms[4], elms[5]);
 	}
 
 	contextTransform(ctx) {
 		var elms = this.getTransformElements();
-		ctx.transform(elms[0], elms[1], elms[2], elms[3], elms[4], elms[5])
+		ctx.transform(elms[0], elms[1], elms[2], elms[3], elms[4], elms[5]);
 	}
 
     static Identity() {
@@ -173,9 +178,9 @@ class Matrix3D extends Matrix2D {
 		var angleSin = Math.sin(angleRads);
 		result.elements[0][0] = angleCos;
 		result.elements[1][1] = angleCos;
-		result.elements[0][1] = angleSin;
-		result.elements[1][0] = -angleSin;
-		return result
+		result.elements[0][1] = -angleSin;
+		result.elements[1][0] = angleSin;
+		return result;
 	}
 
 }
